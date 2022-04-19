@@ -20,7 +20,7 @@ obj.insert("http://localhost:5000/test/c","GET",23,100)<br>
 #insert(url:str,method:str,working_response_length:int,max_retry:int,headers=None,payload=None)<br>
 #url : API url<br>
 #method:  GET or POST<br>
-#working_response_length: >length for success response<br>
+#working_response_length: >=length for success response<br>
 #max_retry: max number or retry on an API<br>
 #headers: API Headers<br>
 #payload: API Payload<br>
