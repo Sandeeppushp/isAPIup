@@ -9,13 +9,13 @@ Length based API testing and monitoring library
 import isAPIup
 
 #This will create sqlite3 db on current path<br>
-obj=isAPIup.create("test")
-
-#This will insert the url and other parameters
-obj.insert("http://localhost:5000/test/a","GET",23,100)
-obj.insert("http://localhost:5000/test/b","GET",23,100)
-obj.insert("http://localhost:5000/test/c","GET",23,100)
-
+obj=isAPIup.create("test")<br>
+<br>
+#This will insert the url and other parameters<br>
+obj.insert("http://localhost:5000/test/a","GET",23,100)<br>
+obj.insert("http://localhost:5000/test/b","GET",23,100)<br>
+obj.insert("http://localhost:5000/test/c","GET",23,100)<br>
+<br>
 #insert parameters<br>
 #insert(url:str,method:str,working_response_length:int,max_retry:int,headers=None,payload=None)<br>
 #url : API url<br>
