@@ -40,7 +40,9 @@ response=obj.execute()<br>
 '{\n  "msg": "working fine"\n}\n'
 
 
-
+<br>
+<br>
+<br>
 deletefromconnection(url)<br>
 #this will delete url and its content form main table<br>
 <br>
