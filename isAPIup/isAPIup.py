@@ -210,9 +210,7 @@ class create:
                             url=url+"/"+postfix_url
                             
                     response=requests.request(method,url=url,headers=headers,data=payload)
-                    if show_logs==True:
-                        print("running for ",'url',url,'current_response_length',current_response_length,'working_response_length',working_response_length,total_retry)
-
+                
                     working=False
                     current_response_length=len(response.text)
                     if current_response_length >= int(working_response_length):
