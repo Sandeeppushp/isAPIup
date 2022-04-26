@@ -81,22 +81,22 @@ class create:
 
 
 
-    def append_new_data(self,url,method,headers,payload,working,current_response_length,max_retry,total_retry=0):
+    def append_new_data(self,url,method,headers,payload,working,current_response_length,working_response_length,max_retry,total_retry=0):
             url_db = sqlite3.connect(self.filename+'_sqlite3'+'.db' , detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
 
             temp_url_check=url_db.execute("SELECT * FROM session_table where url='"+url+"'").fetchall()
             if temp_url_check==[]:       
-                    url_db.execute("INSERT INTO session_table(url, method, headers, payload, datetime, working, current_response_length, max_retry) values(?,?,?,?,?,?,?,?)" ,(url, method, str(headers), str(payload), datetime.datetime.now(), str(working),current_response_length,max_retry))
+                    url_db.execute("INSERT INTO session_table(url, method, headers, payload, datetime, working, current_response_length, working_response_length,max_retry) values(?,?,?,?,?,?,?,?,?)" ,(url, method, str(headers), str(payload), datetime.datetime.now(), str(working),current_response_length,working_response_length,max_retry))
                     url_db.commit()
                     return True
             else:
-                    url_db.execute("UPDATE session_table SET total_retry="+str(total_retry)+", working='"+str(working)+"', current_response_length='"+str(current_response_length)+"' where url = '"+url+"'")
+                    url_db.execute("UPDATE session_table SET total_retry="+str(total_retry)+", working='"+str(working)+"', current_response_length='"+str(current_response_length)+"', working_response_length='"+str(working_response_length)+"' where url = '"+url+"'")
                     url_db.commit()
                     return True
 
 
 
-    def start(self,postfix_url=None):
+    def start(self,postfix_url=None,show_logs=False):
             url_db = sqlite3.connect(self.filename+'_sqlite3'+'.db' , detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
 
             url_db.execute("DROP TABLE IF EXISTS session_table;")
@@ -111,6 +111,7 @@ class create:
                      datetime timestamp NOT NULL,
                      working TEXT,
                      current_response_length TEXT,
+                     working_response_length TEXT,
                      max_retry INTEGER DEFAULT 10,
                      total_retry INTEGER DEFAULT 0);''')
             url_db.commit()
@@ -145,7 +146,8 @@ class create:
                             url=url+"/"+postfix_url
 
                     response=requests.request(method,url=url,headers=headers,data=payload)
-                    print("running for ",url)
+                    if show_logs==True:
+                        print("running for ",url)
 
                     working=False
                     current_response_length=len(response.text)
@@ -153,7 +155,7 @@ class create:
                             working=True
                             flag=flag+1
                     
-                    self.append_new_data(url,method,headers,payload,working,current_response_length,max_retry,total_retry=0)
+                    self.append_new_data(url,method,headers,payload,working,current_response_length,working_response_length,max_retry,total_retry=0)
 
             if flag==0:
                     print('No URL is working Now!!!')
@@ -166,8 +168,13 @@ class create:
 
 
 
-    def execute(self,postfix_url=None):
+    def execute(self,postfix_url=None,show_logs=True):
             url_db = sqlite3.connect(self.filename+'_sqlite3'+'.db' , detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
+
+            check_session_table=url_db.execute("SELECT name FROM sqlite_master WHERE name='session_table'").fetchall()
+            if check_session_table==[]:
+                print('Session is empty!!, Please call start method')
+                return False
 
             url_data=url_db.execute("SELECT * FROM session_table where working='True'").fetchall()
             if url_data==[]:
@@ -182,9 +189,9 @@ class create:
                     method=i[2]
                     headers=i[3]
                     payload=i[4]
-                    working_response_length=i[7]
-                    max_retry=i[8]
-                    total_retry=i[9]
+                    working_response_length=i[8]
+                    max_retry=i[9]
+                    total_retry=i[10]
 
                     if total_retry>=max_retry:
                             print("Max Calling Limit Reached for ",url)
@@ -203,19 +210,24 @@ class create:
                             url=url+"/"+postfix_url
                             
                     response=requests.request(method,url=url,headers=headers,data=payload)
-                    print("running for ",url,total_retry)
+                    if show_logs==True:
+                        print("running for ",'url',url,'current_response_length',current_response_length,'working_response_length',working_response_length,total_retry)
 
                     working=False
                     current_response_length=len(response.text)
                     if current_response_length >= int(working_response_length):
                             working=True
                             flag=flag+1
-                            self.append_new_data(url,method,headers,payload,working,current_response_length,max_retry,total_retry)
+                            self.append_new_data(url,method,headers,payload,working,current_response_length,working_response_length,max_retry,total_retry)
+                            if show_logs==True:
+                                print("running for ",'url',url,'current_response_length',current_response_length,'working_response_length',working_response_length,'working',working,'total_retry',total_retry)
                             return response
                     else:
                             working=False
                             total_retry=total_retry+1
-                            self.append_new_data(url,method,headers,payload,working,current_response_length,max_retry,total_retry)
+                            self.append_new_data(url,method,headers,payload,working,current_response_length,working_response_length,max_retry,total_retry)
+                            if show_logs==True:
+                                print("running for ",'url',url,'current_response_length',current_response_length,'working_response_length',working_response_length,'working',working,'total_retry',total_retry)
                     
             if flag==0:
                     print('No URL is working Now!!!\nScanning from Begining...')
