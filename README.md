@@ -8,13 +8,14 @@ Length based API testing and monitoring library
 
 import isAPIup
 
-#This will create sqlite3 db on current path<br>
+
 obj=isAPIup.create("test")<br>
+#This will create sqlite3 db on current path<br>
 <br>
-#This will insert the url and other parameters<br>
+
 obj.insert("http://localhost:5000/test/a","GET",23,100)<br>
 obj.insert("http://localhost:5000/test/b","GET",23,100)<br>
-obj.insert("http://localhost:5000/test/c","GET",23,100)<br>
+#This will insert the url and other parameters<br>
 <br>
 #insert parameters<br>
 #insert(url:str,method:str,working_response_length:int,max_retry:int,headers=None,payload=None)<br>
@@ -30,6 +31,8 @@ obj.start()<br>
 <br>
 #This will return the response of live working API<br>
 response=obj.execute()<br>
+#execute parameters
+#execute(postfix_url=None,show_logs=True)
 >>> response<br>
 <Response [200]><br>
 >>> response.text<br>
