@@ -29,10 +29,10 @@ obj.insert("http://localhost:5000/test/b","GET",23,100)<br>
 #This will start scanning the data which is provided above and change the status of running ones<br>
 obj.start()<br>
 <br>
-#This will return the response of live working API<br>
+<br>
 response=obj.execute()<br>
-#execute parameters<br>
-#execute(postfix_url=None,show_logs=True)
+#execute parameters execute(postfix_url=None,show_logs=True)
+#This will return the response of live working API<br>
 >>> response<br>
 <Response [200]><br>
 >>> response.text<br>
