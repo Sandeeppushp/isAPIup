@@ -1,5 +1,5 @@
 # isAPIup
-Length is a based API testing and monitoring library
+isAPIup is a Length based API testing and monitoring library
 
 
 
