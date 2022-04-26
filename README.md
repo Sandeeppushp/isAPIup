@@ -39,3 +39,14 @@ response=obj.execute()<br>
 >>> response.text<br>
 '{\n  "msg": "working fine"\n}\n'
 
+
+
+deletefromconnection(url)<br>
+#this will delete url and its content form main table<br>
+<br>
+
+deletefromsession(url)<br>
+#this will delete url and its content form session table<br>
+<br>
+
+
