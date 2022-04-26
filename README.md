@@ -31,7 +31,7 @@ obj.start()<br>
 <br>
 #This will return the response of live working API<br>
 response=obj.execute()<br>
-#execute parameters
+#execute parameters<br>
 #execute(postfix_url=None,show_logs=True)
 >>> response<br>
 <Response [200]><br>
