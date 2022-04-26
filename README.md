@@ -26,7 +26,7 @@ obj.insert("http://localhost:5000/test/b","GET",23,100)<br>
 #headers: API Headers<br>
 #payload: API Payload<br>
 <br>
-#This will start scanning the data which is provided above and change the status of running ones<br>
+#This will start scanning the data which is provided above and change the status of running ones and has to be execute first time<br>
 obj.start()<br>
 <br>
 <br>
